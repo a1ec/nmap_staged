@@ -11,8 +11,7 @@ field='$2'
 
 PORT_RANGES=(100 1000 10000)
 export PORT_RANGES=(0 "${PORT_RANGES[@]}" 65535)
-#for i in ${PORT_RANGES[@]}; do echo $i; done
-#LENGTH=${#PORT_RANGES[@]}
+export LENGTH=${#PORT_RANGES[@]}
 export DATEFORMAT="+%Y-%m-%d_%H%M%S%N";
 
 nmap_staged() {
