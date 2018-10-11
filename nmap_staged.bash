@@ -71,8 +71,8 @@ nmap_staged() {
         # nmap output: WARNING: a TCP scan type was requested, but no tcp ports were specified.  Skipping this scan type.
         set -x
         OUTFILENAME=nmap/$(basename "$HOSTSFILE").stage-${i}-top-"$PROTOCOL"-${PORT_RANGES[$i]}.${DATETIME}
-        sudo nmap -Pn "$PROTOCOLFLAG" -sV --top-ports "${PORT_RANGES[$i]}" $exclude_arg \
-                  -iL "$HOSTSFILE" -oA "$OUTFILENAME"
+        sudo nmap -Pn "$PROTOCOLFLAG" -sV --top-ports "${PORT_RANGES[$i]}" \
+                $(echo $exclude_arg) -iL "$HOSTSFILE" -oA "$OUTFILENAME"
         set +x
     done
 }
