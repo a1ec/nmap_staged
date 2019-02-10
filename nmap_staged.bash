@@ -2,8 +2,9 @@
 # Adapted from https://security.stackexchange.com/questions/170400/nmap-top-ports-range-selection
 top_ports() {
     if [[ -z $2 ]]; then printf "usage: $FUNCNAME PROTOCOL QUANTITY\n\nEXAMPLE: top-ports udp 32\n"; return 1; fi
-field='$2'
+    field='$2'
     udpflag=''
+    # if udp selected, set the appropriate nmap flags
     [[ $1 == "udp" ]] && field='$4' && udpflag='-sU'
     # sudo required for UDP output
     sudo nmap $udpflag -oG - -v --top-ports $2 2>/dev/null | awk -F'[);]' "/Ports/{print ${field}}"
@@ -69,11 +70,10 @@ nmap_staged() {
         
         # BUG check the final scan is being performed, seems like excluding all ports???
         # nmap output: WARNING: a TCP scan type was requested, but no tcp ports were specified.  Skipping this scan type.
-        set -x
+        #set -x
         OUTFILENAME=nmap/$(basename "$HOSTSFILE").stage-${i}-top-"$PROTOCOL"-${PORT_RANGES[$i]}.${DATETIME}
-        sudo nmap -Pn "$PROTOCOLFLAG" -sV --top-ports "${PORT_RANGES[$i]}" $exclude_arg \
-                  -iL "$HOSTSFILE" -oA "$OUTFILENAME"
-        set +x
+        sudo nmap -Pn "$PROTOCOLFLAG" -sV --top-ports "${PORT_RANGES[$i]}" $exclude_arg -iL "$HOSTSFILE" -oA "$OUTFILENAME"
+        #set +x
     done
 }
 
